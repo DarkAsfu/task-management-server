@@ -3,7 +3,7 @@ const cors = require('cors')
 require('dotenv').config();
 const port = process.env.PORT || 5000;
 const app =express();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 // middleware
 app.use(cors());
@@ -51,7 +51,13 @@ async function run() {
         res.send(result);
     })
 
-
+    // delete api
+    app.delete('/alltask/:id', async(req, res) => {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const result = await taskCollection.deleteOne(query);
+      res.send(result);
+    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
