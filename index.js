@@ -57,7 +57,21 @@ async function run() {
         const result = await taskCollection.insertOne(newTask);
         res.send(result);
     })
-
+    // update status api
+    app.patch('/alltask/status/:id', async(req, res) => {
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const options = { upsert: true };
+      const updateStatus = req.body;
+      console.log(updateStatus);
+      const task = {
+        $set: {
+          status: updateStatus.status,
+        }
+      }
+      const result = await taskCollection.updateOne(filter, task, options)
+      res.send(result);
+    })
     // delete api
     app.delete('/alltask/:id', async(req, res) => {
       const id = req.params.id;
