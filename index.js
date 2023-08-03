@@ -29,7 +29,7 @@ async function run() {
     const taskCollection = client.db('taskCollectionDB').collection('tasks')
     // get api
     app.get('/alltask', async(req, res) => {
-        const cursor = taskCollection.find();
+        const cursor = taskCollection.find().sort({ _id: -1 });
         const result = await cursor.toArray();
         res.send(result);
     })
